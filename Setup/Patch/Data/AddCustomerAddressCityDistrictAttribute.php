@@ -6,9 +6,6 @@ namespace AlbertMage\Quote\Setup\Patch\Data;
 
 use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
-use Magento\Framework\DB\Ddl\Table;
-use Magento\Framework\Setup\InstallDataInterface;
-use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Sales\Setup\SalesSetupFactory;
 use Magento\Quote\Setup\QuoteSetupFactory;
@@ -43,16 +40,19 @@ class AddCustomerAddressCityDistrictAttribute implements DataPatchInterface
     private $attributeSetFactory;
 
     /**
+     * @param ModuleDataSetupInterface $moduleDataSetup
      * @param EavSetupFactory $eavSetupFactory
      * @param QuoteSetupFactory $quoteSetupFactory
      * @param salesSetupFactory $salesSetupFactory
      */
     public function __construct(
+        ModuleDataSetupInterface $moduleDataSetup,
         EavSetupFactory $eavSetupFactory,
         QuoteSetupFactory $quoteSetupFactory,
         salesSetupFactory $salesSetupFactory,
         AttributeSetFactory $attributeSetFactory
     ) {
+        $this->moduleDataSetup = $moduleDataSetup;
         $this->eavSetupFactory = $eavSetupFactory;
         $this->quoteSetupFactory = $quoteSetupFactory;
         $this->salesSetupFactory = $salesSetupFactory;
@@ -69,7 +69,7 @@ class AddCustomerAddressCityDistrictAttribute implements DataPatchInterface
         // $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
  
         /** @var QuoteSetup $quoteSetup */
-        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $setup]);
+        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->moduleDataSetup]);
  
         // /** @var SalesSetup $salesSetup */
         // $salesSetup = $this->salesSetupFactory->create(['setup' => $setup]);
@@ -127,40 +127,40 @@ class AddCustomerAddressCityDistrictAttribute implements DataPatchInterface
                 'system' => 0,
             ]
         );
-        $entity = $quoteSetup->getEavConfig()->getEntityType('quote_address');
-        $attributeSetId = $entity->getDefaultAttributeSetId();
+        // $entity = $quoteSetup->getEavConfig()->getEntityType('quote_address');
+        // $attributeSetId = $entity->getDefaultAttributeSetId();
 
-        $attributeSet = $this->attributeSetFactory->create();
-        $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
+        // $attributeSet = $this->attributeSetFactory->create();
+        // $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
 
-        $cityIdAttribute = $quoteSetup->getEavConfig()->getAttribute('quote_address', 'city_id');
+        $cityIdAttribute = $quoteSetup->getAttribute('quote_address', 'city_id');
 
-        $cityIdAttribute->addData([
-            'attribute_set_id' => $attributeSetId,
-            'attribute_group_id' => $attributeGroupId
-        ]);
+        // $cityIdAttribute->addData([
+        //     'attribute_set_id' => $attributeSetId,
+        //     'attribute_group_id' => $attributeGroupId
+        // ]);
 
         // Save attribute using its resource model
         $cityIdAttribute->save();
 
 
-        $districtAttribute = $quoteSetup->getEavConfig()->getAttribute('quote_address', 'district');
+        $districtAttribute = $quoteSetup->getAttribute('quote_address', 'district');
 
-        $districtAttribute->addData([
-            'attribute_set_id' => $attributeSetId,
-            'attribute_group_id' => $attributeGroupId
-        ]);
+        // $districtAttribute->addData([
+        //     'attribute_set_id' => $attributeSetId,
+        //     'attribute_group_id' => $attributeGroupId
+        // ]);
 
         // Save attribute using its resource model
         $districtAttribute->save();
 
 
-        $districtIdAttribute = $quoteSetup->getEavConfig()->getAttribute('quote_address', 'district_id');
+        $districtIdAttribute = $quoteSetup->getAttribute('quote_address', 'district_id');
 
-        $districtIdAttribute->addData([
-            'attribute_set_id' => $attributeSetId,
-            'attribute_group_id' => $attributeGroupId
-        ]);
+        // $districtIdAttribute->addData([
+        //     'attribute_set_id' => $attributeSetId,
+        //     'attribute_group_id' => $attributeGroupId
+        // ]);
 
         // Save attribute using its resource model
         $districtIdAttribute->save();
