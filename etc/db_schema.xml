@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © PHPDigital, Inc. All rights reserved.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote_address" resource="checkout" engine="innodb" comment="Sales Flat Quote Address">
+        <column xsi:type="int" name="city_id" unsigned="true" nullable="true" identity="false" comment="City Id"/>
+        <column xsi:type="varchar" name="district" nullable="true" length="255" comment="District"/>
+        <column xsi:type="int" name="district_id" unsigned="true" nullable="true" identity="false"
+                comment="District"/>
+    </table>
+</schema>
