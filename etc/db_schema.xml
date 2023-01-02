@@ -12,4 +12,44 @@
         <column xsi:type="int" name="district_id" unsigned="true" nullable="true" identity="false"
                 comment="District"/>
     </table>
+    <table name="cart" resource="default" engine="innodb" comment="Cart">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Store ID"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="true" identity="false"
+                comment="Customer ID"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CART_STORE_ID_STORE_STORE_ID" table="cart" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <index referenceId="CART_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+    </table>
+    <table name="cart_item" resource="default" engine="innodb" comment="Cart Item">
+        <column xsi:type="int" name="item_id" unsigned="true" nullable="false" identity="true"
+                comment="Item ID"/>
+        <column xsi:type="int" name="cart_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Cart ID"/>
+         <column xsi:type="int" name="product_id" unsigned="true" nullable="true" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="decimal" name="qty" scale="4" precision="12" unsigned="false" nullable="false" default="0" comment="Qty"/>
+        <column xsi:type="smallint" name="is_active" unsigned="true" nullable="true" identity="false" comment="Is Active"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="item_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CART_ITEM_CART_ID_CART_ENTITY_ID" table="cart_item" column="cart_id" referenceTable="cart" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="CART_ITEM_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+        <index referenceId="CART_ITEM_CART_ID" indexType="btree">
+            <column name="cart_id"/>
+        </index>
+    </table>
 </schema>

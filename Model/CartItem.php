@@ -1,0 +1,111 @@
+<?php
+/**
+ * Copyright © PHP Digital, Inc. All rights reserved.
+ */
+namespace AlbertMage\Quote\Model;
+
+use Magento\Framework\Model\AbstractModel;
+use AlbertMage\Quote\Api\Data\CartItemInterface;
+
+/**
+ * Class CartItem
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
+class CartItem extends AbstractModel implements CartItemInterface
+{
+    
+    /**
+     * Initialize cart item model
+     *
+     * @return void
+     */
+    protected function _construct()
+    {
+        $this->_init(\AlbertMage\Quote\Model\ResourceModel\CartItem::class);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getId()
+    {
+        return $this->getData(self::ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setId($id)
+    {
+        $this->setData(self::ID, $id);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCartId()
+    {
+        return $this->getData(self::CART_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCartId($cartId)
+    {
+        $this->setData(self::CART_ID, $cartId);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProductId()
+    {
+        return $this->getData(self::PRODUCT_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setProductId($productId)
+    {
+        $this->setData(self::PRODUCT_ID, $productId);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getQty()
+    {
+        return $this->getData(self::QTY);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setQty($qty)
+    {
+        $this->setData(self::QTY, $qty);
+        return $this;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getIsActive()
+    {
+        return $this->getData(self::IS_ACTIVE);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setIsActive($isActive)
+    {
+        $this->setData(self::IS_ACTIVE, $isActive);
+        return $this;
+    }
+}

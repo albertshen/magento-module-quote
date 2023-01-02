@@ -43,7 +43,7 @@ class RuleCollection
         $now = null,
         Address $address = null
     ) {
-        $collection->addFieldToFilter('rule_id', ['neq' => 3]);
+        //$collection->addFieldToFilter('rule_id', ['neq' => 3]);
         return $result;
     }
 
