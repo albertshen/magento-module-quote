@@ -120,4 +120,24 @@ class CartItemRepository implements \AlbertMage\Quote\Api\CartItemRepositoryInte
         $searchResults->setTotalCount($collection->getSize());
         return $searchResults;
     }
+
+    /**
+     * Retrieve cart item.
+     *
+     * @param int $cartId
+     * @param int $productId
+     * @return CartItemInterface|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getOneByProductId($cartId, $productId)
+    {
+        /** @var Collection $collection */
+        $collection = $this->cartItemCollectionFactory->create();
+        $collection->addFieldToFilter('cart_id', ['eq' => $cartId]);
+        $collection->addFieldToFilter('product_id', ['eq' => $productId]);
+        if ($collection->getSize()) {
+            return $collection->getFirstItem();
+        }
+        return $this->cartItemFactory->create();
+    }
 }

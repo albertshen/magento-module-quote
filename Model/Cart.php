@@ -82,17 +82,32 @@ class Cart extends AbstractModel implements CartInterface
      */
     public function getAllItems()
     {
-        $items = [];
-        /** @var \Magento\Quote\Model\Quote\Item $item */
-        foreach ($this->getItemsCollection() as $item) {
-            $product = $item->getProduct();
-            if (!$item->isDeleted() && ($product && (int)$product->getStatus() !== ProductStatus::STATUS_DISABLED)) {
-                $items[] = $item;
-            }
-        }
+        // $items = [];
+        // /** @var \Magento\Quote\Model\Quote\Item $item */
+        // foreach ($this->getItemsCollection() as $item) {
+        //     $product = $item->getProduct();
+        //     if (!$item->isDeleted() && ($product && (int)$product->getStatus() !== ProductStatus::STATUS_DISABLED)) {
+        //         $items[] = $item;
+        //     }
+        // }
 
-        return $items;
+        // return $items;
     }
 
+    /**
+     * Get array of all items what can be display directly
+     *
+     * @return \Magento\Quote\Model\Quote\Item[]
+     */
+    public function getAllVisibleItems()
+    {
+        // $items = [];
+        // foreach ($this->getItemsCollection() as $item) {
+        //     if (!$item->isDeleted() && !$item->getParentItemId() && !$item->getParentItem()) {
+        //         $items[] = $item;
+        //     }
+        // }
+        // return $items;
+    }
 
 }

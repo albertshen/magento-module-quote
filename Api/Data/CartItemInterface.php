@@ -17,8 +17,10 @@ interface CartItemInterface
     const ID = 'item_id';
     const CART_ID = 'cart_id';
     const PRODUCT_ID = 'product_id';
+    const SKU = 'sku';
     const QTY = 'qty';
     const IS_ACTIVE = 'is_active';
+    const QUOTE_ITEM_ID = 'quote_item_id';
     /**#@-*/
 
     /**
@@ -67,6 +69,21 @@ interface CartItemInterface
     public function setProductId($productId);
 
     /**
+     * Get sku
+     *
+     * @return string
+     */
+    public function getSku();
+
+    /**
+     * Set sku
+     *
+     * @param string $sku
+     * @return $this
+     */
+    public function setSku($sku);
+
+    /**
      * Get qty
      *
      * @return float
@@ -95,5 +112,20 @@ interface CartItemInterface
      * @return $this
      */
     public function setIsActive($isActive);
+
+    /**
+     * Get quote item Id
+     *
+     * @return int
+     */
+    public function getQuoteItemId();
+
+    /**
+     * Set quote item Id
+     *
+     * @param int $quoteItemId
+     * @return $this
+     */
+    public function setQuoteItemId($quoteItemId);
 
 }

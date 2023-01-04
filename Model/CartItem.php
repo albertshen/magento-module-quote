@@ -78,6 +78,23 @@ class CartItem extends AbstractModel implements CartItemInterface
     /**
      * @inheritDoc
      */
+    public function getSku()
+    {
+        return $this->getData(self::SKU);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setSku($sku)
+    {
+        $this->setData(self::SKU, $sku);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQty()
     {
         return $this->getData(self::QTY);
@@ -106,6 +123,23 @@ class CartItem extends AbstractModel implements CartItemInterface
     public function setIsActive($isActive)
     {
         $this->setData(self::IS_ACTIVE, $isActive);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getQuoteItemId()
+    {
+        return $this->getData(self::QUOTE_ITEM_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setQuoteItemId($quoteItemId)
+    {
+        $this->setData(self::QUOTE_ITEM_ID, $quoteItemId);
         return $this;
     }
 }

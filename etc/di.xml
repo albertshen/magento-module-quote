@@ -5,6 +5,9 @@
     <preference for="AlbertMage\Quote\Api\Data\CartInterface" type="AlbertMage\Quote\Model\Cart"/><preference for="AlbertMage\Quote\Api\CartItemRepositoryInterface" type="AlbertMage\Quote\Model\ResourceModel\CartItemRepository"/>
     <preference for="AlbertMage\Quote\Api\Data\CartItemSearchResultsInterface" type="AlbertMage\Quote\Model\CartItemSearchResults"/>
     <preference for="AlbertMage\Quote\Api\Data\CartItemInterface" type="AlbertMage\Quote\Model\CartItem"/>
+    <preference for="AlbertMage\Quote\Api\CartManagementInterface" type="AlbertMage\Quote\Model\CartManagement"/>
+    <preference for="AlbertMage\Quote\Api\Data\TotalsInterface" type="AlbertMage\Quote\Model\Cart\Totals"/>
+    <preference for="AlbertMage\Quote\Api\Data\TotalsItemInterface" type="AlbertMage\Quote\Model\Cart\TotalsItem"/>
 
     <type name="Magento\SalesRule\Model\ResourceModel\Rule\Collection">
         <plugin name="sales_rule_collection" type="AlbertMage\Quote\Plugin\RuleCollection"/>

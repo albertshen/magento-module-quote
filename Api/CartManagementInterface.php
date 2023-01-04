@@ -12,11 +12,12 @@ namespace AlbertMage\Quote\Api;
 interface CartManagementInterface
 {
     /**
-     * Create customer account.
+     * Add cart item.
      *
-     * @return \AlbertMage\Quote\Api\Data\TotalPriceInterface
+     * @param int $customerId
+     * @param int $productId
+     * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function calulate();
-
+    public function addItem($customerId, $productId);
 }
