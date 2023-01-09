@@ -5,14 +5,14 @@
 namespace AlbertMage\Quote\Model\Cart;
 
 use AlbertMage\Quote\Api\Data\TotalsItemInterface;
-use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Api\AbstractExtensibleObject;
 
 /**
  * Cart item totals.
  *
  * @author Albert Shen <albertshen1206@gmail.com>
  */
-class TotalsItem extends AbstractModel implements TotalsItemInterface
+class TotalsItem extends AbstractExtensibleObject implements TotalsItemInterface
 {
     /**
      * Set totals item id
@@ -32,7 +32,7 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
      */
     public function getItemId()
     {
-        return $this->getData(self::KEY_ITEM_ID);
+        return $this->_get(self::KEY_ITEM_ID);
     }
 
     /**
@@ -42,7 +42,7 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
      */
     public function getPrice()
     {
-        return $this->getData(self::KEY_PRICE);
+        return $this->_get(self::KEY_PRICE);
     }
 
     /**
@@ -63,7 +63,7 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
      */
     public function getQty()
     {
-        return $this->getData(self::KEY_QTY);
+        return $this->_get(self::KEY_QTY);
     }
 
     /**
@@ -84,7 +84,7 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
      */
     public function getRowTotal()
     {
-        return $this->getData(self::KEY_ROW_TOTAL);
+        return $this->_get(self::KEY_ROW_TOTAL);
     }
 
     /**
@@ -105,7 +105,7 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
      */
     public function getDiscountAmount()
     {
-        return $this->getData(self::KEY_DISCOUNT_AMOUNT);
+        return $this->_get(self::KEY_DISCOUNT_AMOUNT);
     }
 
     /**
@@ -122,17 +122,17 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
     /**
      * Returns the discount percent.
      *
-     * @return int|null Discount percent. Otherwise, null.
+     * @return float|null Discount percent. Otherwise, null.
      */
     public function getDiscountPercent()
     {
-        return $this->getData(self::KEY_DISCOUNT_PERCENT);
+        return $this->_get(self::KEY_DISCOUNT_PERCENT);
     }
 
     /**
      * Sets the discount percent.
      *
-     * @param int $discountPercent
+     * @param float $discountPercent
      * @return $this
      */
     public function setDiscountPercent($discountPercent)
@@ -145,7 +145,7 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
      */
     public function getName()
     {
-        return $this->getData(self::KEY_NAME);
+        return $this->_get(self::KEY_NAME);
     }
 
     /**
@@ -154,6 +154,59 @@ class TotalsItem extends AbstractModel implements TotalsItemInterface
     public function setName($name)
     {
         return $this->setData(self::KEY_NAME, $name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getThumbnail()
+    {
+        return $this->_get(self::KEY_THUMBNAIL);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setThumbnail($thumbnail)
+    {
+        return $this->setData(self::KEY_THUMBNAIL, $thumbnail);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIsActive()
+    {
+        return $this->_get(self::KEY_IS_ACTIVE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsActive($isActive)
+    {
+        return $this->setData(self::KEY_IS_ACTIVE, $isActive);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \AlbertMage\Quote\Api\Data\TotalsItemExtensionInterface|null
+     */
+    public function getExtensionAttributes()
+    {
+        return $this->_getExtensionAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \AlbertMage\Quote\Api\Data\TotalsItemExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(\AlbertMage\Quote\Api\Data\TotalsItemExtensionInterface $extensionAttributes)
+    {
+        return $this->_setExtensionAttributes($extensionAttributes);
     }
 
 }

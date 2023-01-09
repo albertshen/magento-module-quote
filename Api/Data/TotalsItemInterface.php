@@ -8,44 +8,26 @@ namespace AlbertMage\Quote\Api\Data;
  * Interface TotalsItemInterface
  * @author Albert Shen <albertshen1206@gmail.com>
  */
-interface TotalsItemInterface
+interface TotalsItemInterface extends \Magento\Framework\Api\ExtensibleDataInterface
 {
-    /**
-     * Item id.
-     */
+
     const KEY_ITEM_ID = 'item_id';
 
-    /**
-     * Price.
-     */
     const KEY_PRICE = 'price';
 
-    /**
-     * Quantity.
-     */
     const KEY_QTY = 'qty';
 
-    /**
-     * Row total.
-     */
     const KEY_ROW_TOTAL = 'row_total';
 
-    /**
-     * Discount amount.
-     */
     const KEY_DISCOUNT_AMOUNT = 'discount_amount';
 
-    /**
-     * Discount percent.
-     */
     const KEY_DISCOUNT_PERCENT = 'discount_percent';
 
-    /**
-     * Item name.
-     */
     const KEY_NAME = 'name';
 
-    /**#@-*/
+    const KEY_THUMBNAIL = 'thumbnail';
+
+    const KEY_IS_ACTIVE = 'is_active';
 
     /**
      * Set totals item id
@@ -151,5 +133,50 @@ interface TotalsItemInterface
      * @return $this
      */
     public function setName($name);
+
+    /**
+     * Returns the product thumbnail.
+     *
+     * @return string Product thumbnail.
+     */
+    public function getThumbnail();
+
+    /**
+     * Sets the product thumbnail.
+     *
+     * @param string $thumbnail
+     * @return $this
+     */
+    public function setThumbnail($thumbnail);
+
+    /**
+     * Returns is active
+     *
+     * @return int
+     */
+    public function getIsActive();
+
+    /**
+     * Sets is active.
+     *
+     * @param int $isActive
+     * @return $this
+     */
+    public function setIsActive($isActive);
+
+    /**
+     * Retrieve existing extension attributes object or create a new one.
+     *
+     * @return \AlbertMage\Quote\Api\Data\TotalsItemExtensionInterface|null
+     */
+    public function getExtensionAttributes();
+
+    /**
+     * Set an extension attributes object.
+     *
+     * @param \AlbertMage\Quote\Api\Data\TotalsItemExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(\AlbertMage\Quote\Api\Data\TotalsItemExtensionInterface $extensionAttributes);
     
 }

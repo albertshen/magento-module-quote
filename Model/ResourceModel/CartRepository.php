@@ -24,9 +24,9 @@ class CartRepository implements \AlbertMage\Quote\Api\CartRepositoryInterface
 {
 
     /**
-     * @var \AlbertMage\Quote\Model\CartFactory
+     * @var \AlbertMage\Quote\Api\Data\CartInterfaceFactory
      */
-    protected $cartFactory;
+    protected $cartInterfaceFactory;
 
     /**
      * @var \AlbertMage\Quote\Model\ResourceModel\Cart
@@ -49,20 +49,20 @@ class CartRepository implements \AlbertMage\Quote\Api\CartRepositoryInterface
     private $collectionProcessor;
 
     /**
-     * @param \AlbertMage\Quote\Model\CartFactory $cartFactory
+     * @param \AlbertMage\Quote\Api\Data\CartInterfaceFactory $cartInterfaceFactory
      * @param \AlbertMage\Quote\Model\ResourceModel\Cart $cartResourceModel
      * @param \AlbertMage\Quote\Api\Data\CartSearchResultsInterfaceFactory $cartSearchResultsFactory
      * @param \AlbertMage\Quote\Model\ResourceModel\Cart\CollectionFactory $cartCollectionFactory
      * @param CollectionProcessorInterface $collectionProcessor
      */
     public function __construct(
-        \AlbertMage\Quote\Model\CartFactory $cartFactory,
+        \AlbertMage\Quote\Api\Data\CartInterfaceFactory $cartInterfaceFactory,
         \AlbertMage\Quote\Model\ResourceModel\Cart $cartResourceModel,
         \AlbertMage\Quote\Api\Data\CartSearchResultsInterfaceFactory $cartSearchResultsFactory,
         \AlbertMage\Quote\Model\ResourceModel\Cart\CollectionFactory $cartCollectionFactory,
         CollectionProcessorInterface $collectionProcessor
     ) {
-        $this->cartFactory = $cartFactory;
+        $this->cartInterfaceFactory = $cartInterfaceFactory;
         $this->cartResourceModel = $cartResourceModel;
         $this->cartSearchResultsFactory = $cartSearchResultsFactory;
         $this->cartCollectionFactory = $cartCollectionFactory;

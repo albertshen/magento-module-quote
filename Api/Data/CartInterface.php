@@ -17,6 +17,7 @@ interface CartInterface
     const ID = 'entity_id';
     const STORE_ID = 'store_id';
     const CUSTOMER_ID = 'customer_id';
+    const QUOTE_ID = 'quote_id';
     /**#@-*/
 
     /**

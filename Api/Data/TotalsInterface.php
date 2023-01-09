@@ -10,9 +10,7 @@ namespace AlbertMage\Quote\Api\Data;
  */
 interface TotalsInterface
 {
-    /**#@+
-     * Constants defined for keys of array, makes typos less likely
-     */
+
     const KEY_GRAND_TOTAL = 'grand_total';
 
     const KEY_SUBTOTAL = 'subtotal';
@@ -28,8 +26,6 @@ interface TotalsInterface
     const KEY_ITEMS = 'items';
 
     const KEY_ITEMS_QTY = 'items_qty';
-
-    /**#@-*/
 
     /**
      * Get grand total in quote currency
@@ -109,7 +105,7 @@ interface TotalsInterface
     /**
      * Get items qty
      *
-     * @return int||null
+     * @return int|null
      */
     public function getItemsQty();
 

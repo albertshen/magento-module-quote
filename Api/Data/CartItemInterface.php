@@ -20,7 +20,7 @@ interface CartItemInterface
     const SKU = 'sku';
     const QTY = 'qty';
     const IS_ACTIVE = 'is_active';
-    const QUOTE_ITEM_ID = 'quote_item_id';
+    const QUOTE_ITEM = 'quote_item';
     /**#@-*/
 
     /**
@@ -114,18 +114,18 @@ interface CartItemInterface
     public function setIsActive($isActive);
 
     /**
-     * Get quote item Id
+     * Get quote item
      *
-     * @return int
+     * @return \Magento\Quote\Api\Data\CartItemInterface
      */
-    public function getQuoteItemId();
+    public function getQuoteItem();
 
     /**
      * Set quote item Id
      *
-     * @param int $quoteItemId
+     * @param \Magento\Quote\Api\Data\CartItemInterface $quoteItem
      * @return $this
      */
-    public function setQuoteItemId($quoteItemId);
+    public function setQuoteItem(\Magento\Quote\Api\Data\CartItemInterface $quoteItem);
 
 }

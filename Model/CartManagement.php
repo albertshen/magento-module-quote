@@ -88,6 +88,7 @@ class CartManagement implements CartManagementInterface
         } else {
             $cartItem->setCartId($cartId);
             $cartItem->setProductId($productId);
+            $cartItem->setSku($product->getSku());
             $cartItem->setQty(1);
             $cartItem->setIsActive(1);
         }

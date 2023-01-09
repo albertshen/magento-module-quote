@@ -12,4 +12,7 @@
     <type name="Magento\SalesRule\Model\ResourceModel\Rule\Collection">
         <plugin name="sales_rule_collection" type="AlbertMage\Quote\Plugin\RuleCollection"/>
     </type>
+    <type name="Magento\Quote\Model\Cart\Totals\ItemConverter">
+        <plugin name="quote_totals_item_converter" type="AlbertMage\Quote\Plugin\ItemConverter"/>
+    </type>
 </config>

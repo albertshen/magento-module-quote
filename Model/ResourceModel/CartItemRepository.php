@@ -24,9 +24,9 @@ class CartItemRepository implements \AlbertMage\Quote\Api\CartItemRepositoryInte
 {
 
     /**
-     * @var \AlbertMage\Quote\Model\CartItemFactory
+     * @var \AlbertMage\Quote\Api\Data\CartItemInterfaceFactory
      */
-    protected $cartItemFactory;
+    protected $cartItemInterfaceFactory;
 
     /**
      * @var \AlbertMage\Quote\Model\ResourceModel\CartItem
@@ -49,20 +49,20 @@ class CartItemRepository implements \AlbertMage\Quote\Api\CartItemRepositoryInte
     private $collectionProcessor;
 
     /**
-     * @param \AlbertMage\Quote\Model\CartItemFactory $cartItemFactory
+     * @param \AlbertMage\Quote\Api\Data\CartItemInterfaceFactory $cartItemInterfaceFactory
      * @param \AlbertMage\Quote\Model\ResourceModel\CartItem $cartItemResourceModel
      * @param \AlbertMage\Quote\Api\Data\CartItemSearchResultsInterfaceFactory $cartItemSearchResultsFactory
      * @param \AlbertMage\Quote\Model\ResourceModel\CartItem\CollectionFactory $cartItemCollectionFactory
      * @param CollectionProcessorInterface $collectionProcessor
      */
     public function __construct(
-        \AlbertMage\Quote\Model\CartItemFactory $cartItemFactory,
+        \AlbertMage\Quote\Api\Data\CartItemInterfaceFactory $cartItemInterfaceFactory,
         \AlbertMage\Quote\Model\ResourceModel\CartItem $cartItemResourceModel,
         \AlbertMage\Quote\Api\Data\CartItemSearchResultsInterfaceFactory $cartItemSearchResultsFactory,
         \AlbertMage\Quote\Model\ResourceModel\CartItem\CollectionFactory $cartItemCollectionFactory,
         CollectionProcessorInterface $collectionProcessor
     ) {
-        $this->cartItemFactory = $cartItemFactory;
+        $this->cartItemInterfaceFactory = $cartItemInterfaceFactory;
         $this->cartItemResourceModel = $cartItemResourceModel;
         $this->cartItemSearchResultsFactory = $cartItemSearchResultsFactory;
         $this->cartItemCollectionFactory = $cartItemCollectionFactory;
@@ -138,6 +138,6 @@ class CartItemRepository implements \AlbertMage\Quote\Api\CartItemRepositoryInte
         if ($collection->getSize()) {
             return $collection->getFirstItem();
         }
-        return $this->cartItemFactory->create();
+        return $this->cartItemInterfaceFactory->create();
     }
 }

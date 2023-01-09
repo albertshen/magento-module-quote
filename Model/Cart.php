@@ -4,8 +4,10 @@
  */
 namespace AlbertMage\Quote\Model;
 
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;
 use AlbertMage\Quote\Api\Data\CartInterface;
+use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 
 /**
  * Class Cart
@@ -82,32 +84,36 @@ class Cart extends AbstractModel implements CartInterface
      */
     public function getAllItems()
     {
-        // $items = [];
-        // /** @var \Magento\Quote\Model\Quote\Item $item */
-        // foreach ($this->getItemsCollection() as $item) {
-        //     $product = $item->getProduct();
-        //     if (!$item->isDeleted() && ($product && (int)$product->getStatus() !== ProductStatus::STATUS_DISABLED)) {
-        //         $items[] = $item;
-        //     }
-        // }
-
-        // return $items;
+        $allItems = $this->getData('all_items');
+        if (null === $allItems) {
+            $cartItemCollection = ObjectManager::getInstance()->get(\AlbertMage\Quote\Model\ResourceModel\CartItem\Collection::class);
+            $cartItemCollection->addFieldToFilter('cart_id', ['eq' => $this->getId()]);
+            $allItems = $cartItemCollection->getItems();
+            $this->setData('all_items', $allItems);
+        }
+        return $allItems;
     }
 
     /**
-     * Get array of all items what can be display directly
+     * Retrieve available cart items array
      *
-     * @return \Magento\Quote\Model\Quote\Item[]
+     * @return array
      */
-    public function getAllVisibleItems()
+    public function getAvailableItems()
     {
-        // $items = [];
-        // foreach ($this->getItemsCollection() as $item) {
-        //     if (!$item->isDeleted() && !$item->getParentItemId() && !$item->getParentItem()) {
-        //         $items[] = $item;
-        //     }
-        // }
-        // return $items;
+
+        $items = $this->getData('available_items');
+        if (null === $items) {
+            $items = [];
+            $cartItemCollection = ObjectManager::getInstance()->get(\AlbertMage\Quote\Model\ResourceModel\CartItem\Collection::class);
+            foreach($cartItemCollection->getItems() as $cartItem) {
+                if ($cartItem->getIsActive() && !$cartItem->getProduct()->isDisabled() && $cartItem->getProduct()->isAvailable()) {
+                    $items[] = $cartItem;
+                }
+            }
+            $this->setData('available_items', $items);
+        }
+        return $items;
     }
 
 }

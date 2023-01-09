@@ -4,6 +4,7 @@
  */
 namespace AlbertMage\Quote\Model;
 
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Model\AbstractModel;
 use AlbertMage\Quote\Api\Data\CartItemInterface;
 
@@ -129,17 +130,33 @@ class CartItem extends AbstractModel implements CartItemInterface
     /**
      * @inheritDoc
      */
-    public function getQuoteItemId()
+    public function getQuoteItem()
     {
-        return $this->getData(self::QUOTE_ITEM_ID);
+        return $this->getData(self::QUOTE_ITEM);
     }
 
     /**
      * @inheritDoc
      */
-    public function setQuoteItemId($quoteItemId)
+    public function setQuoteItem(\Magento\Quote\Api\Data\CartItemInterface $quoteItem)
     {
-        $this->setData(self::QUOTE_ITEM_ID, $quoteItemId);
+        $this->setData(self::QUOTE_ITEM, $quoteItem);
         return $this;
     }
+
+    /**
+     * Retrieve product
+     *
+     * @return \Magento\Catalog\Model\Product
+     */
+    public function getProduct()
+    {
+        $product = $this->getData('product');
+        if (null === $product) {
+            $product = ObjectManager::getInstance()->create(\Magento\Catalog\Model\Product::class)->load($this->getProductId());
+            $this->setData('product', $product);
+        }
+        return $product;
+    }
+
 }
