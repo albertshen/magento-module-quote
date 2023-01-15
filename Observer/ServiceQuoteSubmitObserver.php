@@ -1,7 +1,6 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
+ * Copyright © PHP Digital, Inc. All rights reserved.
  */
 declare(strict_types=1);
 
@@ -11,7 +10,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
- * Reset applied rules to quote before collecting totals
+ * Set city and district before quote submit
  */
 class ServiceQuoteSubmitObserver implements ObserverInterface
 {
