@@ -40,7 +40,7 @@ interface TotalsItemInterface extends \Magento\Framework\Api\ExtensibleDataInter
     /**
      * Get totals item id
      *
-     * @return int Item id
+     * @return int|null Item id
      */
     public function getItemId();
 

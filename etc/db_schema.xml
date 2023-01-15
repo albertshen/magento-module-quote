@@ -19,6 +19,10 @@
                 default="0" comment="Store ID"/>
         <column xsi:type="int" name="customer_id" unsigned="true" nullable="true" identity="false"
                 comment="Customer ID"/>
+        <column xsi:type="int" name="quote_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Quote ID"/>
+        <column xsi:type="smallint" name="customer_is_guest" unsigned="true" nullable="true"
+                identity="false" default="0" comment="Customer Is Guest"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Created At"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"/>
@@ -28,6 +32,9 @@
         <constraint xsi:type="foreign" referenceId="CART_STORE_ID_STORE_STORE_ID" table="cart" column="store_id" referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
         <index referenceId="CART_STORE_ID" indexType="btree">
             <column name="store_id"/>
+        </index>
+        <index referenceId="CART_QUOTE_ID" indexType="btree">
+            <column name="quote_id"/>
         </index>
     </table>
     <table name="cart_item" resource="default" engine="innodb" comment="Cart Item">

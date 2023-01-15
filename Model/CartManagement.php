@@ -94,7 +94,7 @@ class CartManagement implements CartManagementInterface
         }
         $cartItemRepository->save($cartItem);
 
-        return '';
+        return true;
     }
 
     /**

@@ -16,7 +16,7 @@ interface CartManagementInterface
      *
      * @param int $customerId
      * @param int $productId
-     * @return string
+     * @return bool
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function addItem($customerId, $productId);
