@@ -143,33 +143,17 @@ class TotalsItem extends AbstractExtensibleObject implements TotalsItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getProduct()
     {
-        return $this->_get(self::KEY_NAME);
+        return $this->_get(self::KEY_PRODUCT);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductInterface $product)
     {
-        return $this->setData(self::KEY_NAME, $name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getThumbnail()
-    {
-        return $this->_get(self::KEY_THUMBNAIL);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setThumbnail($thumbnail)
-    {
-        return $this->setData(self::KEY_THUMBNAIL, $thumbnail);
+        return $this->setData(self::KEY_PRODUCT, $product);
     }
 
     /**

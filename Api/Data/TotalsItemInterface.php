@@ -23,9 +23,7 @@ interface TotalsItemInterface extends \Magento\Framework\Api\ExtensibleDataInter
 
     const KEY_DISCOUNT_PERCENT = 'discount_percent';
 
-    const KEY_NAME = 'name';
-
-    const KEY_THUMBNAIL = 'thumbnail';
+    const KEY_PRODUCT = 'product';
 
     const KEY_IS_ACTIVE = 'is_active';
 
@@ -120,34 +118,19 @@ interface TotalsItemInterface extends \Magento\Framework\Api\ExtensibleDataInter
     public function setDiscountPercent($discountPercent);
 
     /**
-     * Returns the product name.
+     * Returns the product.
      *
-     * @return string|null Product name. Otherwise, null.
+     * @return \AlbertMage\Catalog\Api\Data\ProductInterface Product.
      */
-    public function getName();
+    public function getProduct();
 
     /**
-     * Sets the product name.
+     * Sets the product.
      *
-     * @param string $name
+     * @param \AlbertMage\Catalog\Api\Data\ProductInterface $product
      * @return $this
      */
-    public function setName($name);
-
-    /**
-     * Returns the product thumbnail.
-     *
-     * @return string Product thumbnail.
-     */
-    public function getThumbnail();
-
-    /**
-     * Sets the product thumbnail.
-     *
-     * @param string $thumbnail
-     * @return $this
-     */
-    public function setThumbnail($thumbnail);
+    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductInterface $product);
 
     /**
      * Returns is active
