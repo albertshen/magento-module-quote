@@ -151,7 +151,7 @@ class TotalsItem extends AbstractExtensibleObject implements TotalsItemInterface
     /**
      * {@inheritdoc}
      */
-    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductInterface $product)
+    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductListItemInterface $product)
     {
         return $this->setData(self::KEY_PRODUCT, $product);
     }
