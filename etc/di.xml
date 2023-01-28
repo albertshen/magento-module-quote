@@ -2,7 +2,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="AlbertMage\Quote\Api\CartRepositoryInterface" type="AlbertMage\Quote\Model\ResourceModel\CartRepository"/>
     <preference for="AlbertMage\Quote\Api\Data\CartSearchResultsInterface" type="AlbertMage\Quote\Model\CartSearchResults"/>
-    <preference for="AlbertMage\Quote\Api\Data\CartInterface" type="AlbertMage\Quote\Model\Cart"/><preference for="AlbertMage\Quote\Api\CartItemRepositoryInterface" type="AlbertMage\Quote\Model\ResourceModel\CartItemRepository"/>
+    <preference for="AlbertMage\Quote\Api\Data\CartInterface" type="AlbertMage\Quote\Model\Cart"/>
+    <preference for="AlbertMage\Quote\Api\CartItemRepositoryInterface" type="AlbertMage\Quote\Model\ResourceModel\CartItemRepository"/>
     <preference for="AlbertMage\Quote\Api\Data\CartItemSearchResultsInterface" type="AlbertMage\Quote\Model\CartItemSearchResults"/>
     <preference for="AlbertMage\Quote\Api\Data\CartItemInterface" type="AlbertMage\Quote\Model\CartItem"/>
     <preference for="AlbertMage\Quote\Api\CartManagementInterface" type="AlbertMage\Quote\Model\CartManagement"/>
