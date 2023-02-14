@@ -11,8 +11,9 @@ use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use AlbertMage\Quote\Api\CartManagementInterface;
 use AlbertMage\Quote\Api\Data\CartInterfaceFactory;
-use AlbertMage\Quote\Model\ResourceModel\CartRepositoryFactory;
-use AlbertMage\Quote\Model\ResourceModel\CartItemRepositoryFactory;
+use AlbertMage\Quote\Model\ResourceModel\CartRepository;
+use AlbertMage\Quote\Model\ResourceModel\CartItemRepository;
+use AlbertMage\Customer\Api\Data\SocialAccountInterfaceFactory;
 
 /**
  * @author Albert Shen <albertshen1206@gmail.com>
@@ -30,9 +31,14 @@ class CartManagement implements CartManagementInterface
     protected $cartInterfaceFactory;
 
     /**
-     * @var CartItemRepositoryFactory
+     * @var CartRepository
      */
-    protected $cartItemRepositoryFactory;
+    protected $cartRepository;
+
+    /**
+     * @var CartItemRepository
+     */
+    protected $cartItemRepository;
 
     /**
      * @var ProductFactory
@@ -40,30 +46,64 @@ class CartManagement implements CartManagementInterface
     protected $productFactory;
 
     /**
+     * @var SocialAccountInterfaceFactory
+     */
+    protected $socialAccountFactory;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param ProductFactory $productFactory;
      * @param CartInterfaceFactory $cartInterfaceFactory
-     * @param CartRepositoryFactory $cartRepositoryFactory
-     * @param CartItemRepositoryFactory $cartItemRepositoryFactory
+     * @param CartRepository $cartRepository
+     * @param CartItemRepository $cartItemRepository
+     * @param SocialAccountInterfaceFactory $socialAccountFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         ProductFactory $productFactory,
         CartInterfaceFactory $cartInterfaceFactory,
-        CartRepositoryFactory $cartRepositoryFactory,
-        CartItemRepositoryFactory $cartItemRepositoryFactory
+        CartRepository $cartRepository,
+        CartItemRepository $cartItemRepository,
+        SocialAccountInterfaceFactory $socialAccountFactory
     ) {
         $this->storeManager = $storeManager;
         $this->productFactory = $productFactory;
         $this->cartInterfaceFactory = $cartInterfaceFactory;
-        $this->cartRepositoryFactory = $cartRepositoryFactory;
-        $this->cartItemRepositoryFactory = $cartItemRepositoryFactory;
+        $this->cartRepository = $cartRepository;
+        $this->cartItemRepository = $cartItemRepository;
+        $this->socialAccountFactory = $socialAccountFactory;
     }
 
     /**
      * @inheritDoc
      */
-    public function addItem($customerId, $productId)
+    public function addMineItem($customerId, $productId)
+    {
+        $product = $this->productFactory->create()->load($productId);
+        if (!$product->getId()) {
+            throw new NoSuchEntityException(
+                __('The product doesn\'t exit.'),
+
+            );
+        }
+        
+        $cart = $this->cartInterfaceFactory->create()->load($customerId, 'customer_id');
+
+        if (!$cart->getId()) {
+            $cart = $this->cartInterfaceFactory->create();
+            $cart->setCustomerId($customerId);
+            $cart->setStoreId($this->storeManager->getStore()->getId());
+            $this->cartRepository->save($cart);
+        }
+
+        return $this->addItem($cart->getId(), $product);
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addGuestItem($guestToken, $productId)
     {
         $product = $this->productFactory->create()->load($productId);
         if (!$product->getId()) {
@@ -73,16 +113,33 @@ class CartManagement implements CartManagementInterface
             );
         }
 
-        if (!$product->getId()) {
-            throw new NoSuchEntityException(
-                __('The product doesn\'t exit.'),
+        $guest = $this->socialAccountFactory->create()->load($guestToken, 'unique_hash');
 
-            );
+        $guestId = $guest->getOpenId();
+
+        $cart = $this->cartInterfaceFactory->create()->load($guestId, 'guest_id');
+
+        if (!$cart->getId()) {
+            $cart = $this->cartInterfaceFactory->create();
+            $cart->setGuestId($guestId);
+            $cart->setStoreId($this->storeManager->getStore()->getId());
+            $this->cartRepository->save($cart);
         }
-        
-        $cartId = $this->getCartId($customerId);
-        $cartItemRepository = $this->cartItemRepositoryFactory->create();
-        $cartItem = $cartItemRepository->getOneByProductId($cartId, $productId);
+
+        return $this->addItem($cart->getId(), $product);
+
+    }
+
+    /**
+     * @param int $cartId
+     * @param \Magento\Catalog\Model\Product $product
+     * @return int
+     */
+    private function addItem($cartId, \Magento\Catalog\Model\Product $product)
+    {
+
+        $productId = $product->getId();
+        $cartItem = $this->cartItemRepository->getOneByProductId($cartId, $productId);
         if($cartItem->getId()) {
             $cartItem->setQty($cartItem->getQty() + 1);
         } else {
@@ -92,25 +149,25 @@ class CartManagement implements CartManagementInterface
             $cartItem->setQty(1);
             $cartItem->setIsActive(1);
         }
-        $cartItemRepository->save($cartItem);
+        $this->cartItemRepository->save($cartItem);
 
-        return true;
+        return $this->getCartTotalQty($cartId);
+
     }
 
     /**
-     * @param int $customerId
+     * @param int $cartId
      * @return int
      */
-    private function getCartId($customerId)
+    private function getCartTotalQty($cartId)
     {
-        $cart = $this->cartInterfaceFactory->create()->load($customerId, 'customer_id');
-        if (!$cart->getId()) {
-            $cart = $this->cartInterfaceFactory->create();
-            $cart->setCustomerId($customerId);
-            $cart->setStoreId($this->storeManager->getStore()->getId());
-            $this->cartRepositoryFactory->create()->save($cart);
+        $cartItemCollection = $this->cartItemRepository->getByCartId($cartId);
+
+        $count = 0;
+        foreach($cartItemCollection as $cartItem) {
+            $count += (int) $cartItem->getQty();
         }
-        return $cart->getId();
+        return $count;
     }
 
 }

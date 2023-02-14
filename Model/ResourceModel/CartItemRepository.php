@@ -140,4 +140,19 @@ class CartItemRepository implements \AlbertMage\Quote\Api\CartItemRepositoryInte
         }
         return $this->cartItemInterfaceFactory->create();
     }
+
+    /**
+     * Retrieve cart items.
+     *
+     * @param int $cartId
+     * @return \AlbertMage\Quote\Model\ResourceModel\CartItem\Collection
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getByCartId($cartId)
+    {
+        $collection = $this->cartItemCollectionFactory->create();
+        $collection->addFieldToFilter('cart_id', ['eq' => $cartId]);
+        return $collection;
+    }
+
 }

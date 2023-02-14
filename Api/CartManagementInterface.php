@@ -12,12 +12,22 @@ namespace AlbertMage\Quote\Api;
 interface CartManagementInterface
 {
     /**
-     * Add cart item.
+     * Add mine cart item.
      *
      * @param int $customerId
      * @param int $productId
-     * @return bool
+     * @return int
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function addItem($customerId, $productId);
+    public function addMineItem($customerId, $productId);
+
+    /**
+     * Add guest cart item.
+     *
+     * @param string $guestToken
+     * @param int $productId
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function addGuestItem($guestToken, $productId);
 }

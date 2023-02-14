@@ -17,6 +17,7 @@ interface CartInterface
     const ID = 'entity_id';
     const STORE_ID = 'store_id';
     const CUSTOMER_ID = 'customer_id';
+    const GUEST_ID = 'guest_id';
     const QUOTE_ID = 'quote_id';
     /**#@-*/
 
@@ -64,5 +65,20 @@ interface CartInterface
      * @return $this
      */
     public function setCustomerId($customerId);
+
+    /**
+     * Get guestId
+     *
+     * @return string
+     */
+    public function getGuestId();
+
+    /**
+     * Set guestId
+     *
+     * @param string $guestId
+     * @return $this
+     */
+    public function setGuestId($guestId);
 
 }

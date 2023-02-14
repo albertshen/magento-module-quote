@@ -63,6 +63,23 @@ class Cart extends AbstractModel implements CartInterface
     /**
      * @inheritDoc
      */
+    public function getGuestId()
+    {
+        return $this->getData(self::GUEST_ID);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setGuestId($guestId)
+    {
+        $this->setData(self::GUEST_ID, $guestId);
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getStoreId()
     {
         return $this->getData(self::STORE_ID);
@@ -106,8 +123,10 @@ class Cart extends AbstractModel implements CartInterface
         if (null === $items) {
             $items = [];
             $cartItemCollection = ObjectManager::getInstance()->get(\AlbertMage\Quote\Model\ResourceModel\CartItem\Collection::class);
+            $cartItemCollection->addFieldToFilter('cart_id', ['eq' => $this->getId()]);
             foreach($cartItemCollection->getItems() as $cartItem) {
-                if ($cartItem->getIsActive() && !$cartItem->getProduct()->isDisabled() && $cartItem->getProduct()->isAvailable()) {
+                $product = ObjectManager::getInstance()->get(\Magento\Catalog\Model\Product::class)->load($cartItem->getProductId());
+                if ($cartItem->getIsActive() && !$product->isDisabled() && $product->isAvailable()) {
                     $items[] = $cartItem;
                 }
             }
@@ -115,5 +134,6 @@ class Cart extends AbstractModel implements CartInterface
         }
         return $items;
     }
+
 
 }
