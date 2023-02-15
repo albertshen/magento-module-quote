@@ -135,7 +135,7 @@ interface TotalsItemInterface extends \Magento\Framework\Api\ExtensibleDataInter
     /**
      * Returns is active
      *
-     * @return int
+     * @return int|null
      */
     public function getIsActive();
 
