@@ -8,6 +8,8 @@
     <module name="AlbertMage_Quote" setup_version="1.0.1">
         <sequence>
             <module name="AlbertMage_Webapi"/>
+            <module name="AlbertMage_Core"/>
+            <module name="AlbertMage_Customer"/>
         </sequence>
     </module>
 </config>

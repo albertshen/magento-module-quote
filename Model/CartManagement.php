@@ -11,9 +11,9 @@ use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use AlbertMage\Quote\Api\CartManagementInterface;
 use AlbertMage\Quote\Api\Data\CartInterfaceFactory;
+use AlbertMage\Quote\Api\Data\CartInterface;
 use AlbertMage\Quote\Model\ResourceModel\CartRepository;
 use AlbertMage\Quote\Model\ResourceModel\CartItemRepository;
-use AlbertMage\Customer\Api\Data\SocialAccountInterfaceFactory;
 
 /**
  * @author Albert Shen <albertshen1206@gmail.com>
@@ -24,6 +24,11 @@ class CartManagement implements CartManagementInterface
      * @var StoreManagerInterface
      */
     private $storeManager;
+
+    /**
+     * @var CartInterface
+     */
+    protected $cart;
 
     /**
      * @var CartInterfaceFactory
@@ -46,32 +51,27 @@ class CartManagement implements CartManagementInterface
     protected $productFactory;
 
     /**
-     * @var SocialAccountInterfaceFactory
-     */
-    protected $socialAccountFactory;
-
-    /**
      * @param StoreManagerInterface $storeManager
-     * @param ProductFactory $productFactory;
+     * @param CartInterface $cart
+     * @param ProductFactory $productFactory
      * @param CartInterfaceFactory $cartInterfaceFactory
      * @param CartRepository $cartRepository
      * @param CartItemRepository $cartItemRepository
-     * @param SocialAccountInterfaceFactory $socialAccountFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
+        CartInterface $cart,
         ProductFactory $productFactory,
         CartInterfaceFactory $cartInterfaceFactory,
         CartRepository $cartRepository,
-        CartItemRepository $cartItemRepository,
-        SocialAccountInterfaceFactory $socialAccountFactory
+        CartItemRepository $cartItemRepository
     ) {
         $this->storeManager = $storeManager;
+        $this->cart = $cart;
         $this->productFactory = $productFactory;
         $this->cartInterfaceFactory = $cartInterfaceFactory;
         $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
-        $this->socialAccountFactory = $socialAccountFactory;
     }
 
     /**
@@ -113,7 +113,8 @@ class CartManagement implements CartManagementInterface
             );
         }
 
-        $guest = $this->socialAccountFactory->create()->load($guestToken, 'unique_hash');
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $guest = $objectManager->create(\AlbertMage\Customer\Api\Data\SocialAccountInterface::class)->load($guestToken, 'unique_hash');
 
         $guestId = $guest->getOpenId();
 
@@ -128,6 +129,51 @@ class CartManagement implements CartManagementInterface
 
         return $this->addItem($cart->getId(), $product);
 
+    }
+
+    /**
+     * Merge the guest cart with customer cart
+     * 
+     * @param string $guestId
+     * @param string $customerId
+     * @return void
+     */
+    public function mergeGuestCart($guestId, $customerId)
+    {
+        $guestCart = $this->cart->load($guestId, 'guest_id');
+
+        if ($guestCart->getId()) {
+
+            //Create customer cart if not exist
+            $customerCart = $this->cart->load($customerId, 'customer_id');
+            if (!$customerCart->getId()) {
+                $customerCart->setCustomerId($customerId);
+                $customerCart->setStoreId($this->storeManager->getStore()->getId());
+                $this->cartRepository->save($customerCart);
+            }
+
+            //Move guest cart items into customer cart
+            foreach ($guestCart->getAllItems() as $cartItem) {
+                $product = $this->productFactory->create()->load($cartItem->getProductId());
+                $this->addItem($customerCart->getId(), $product);
+            }
+
+            //Empty and delete guest cart
+            foreach ($guestCart->getAllItems() as $cartItem) {
+                $this->cartItemRepository->delete($cartItem);
+            }
+            $this->cartRepository->delete($guestCart);
+
+            //Delete guest quote
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $quoteRepository = $objectManager->create(\Magento\Quote\Api\CartRepositoryInterface::class);
+            try {
+                $quote = $quoteRepository->getActiveForCustomer($customerId);
+                $quoteRepository->delete($quote);
+            } catch (NoSuchEntityException $e) {
+            }
+
+        }
     }
 
     /**
@@ -168,6 +214,22 @@ class CartManagement implements CartManagementInterface
             $count += (int) $cartItem->getQty();
         }
         return $count;
+    }
+
+    /**
+     * Empty the cart 
+     * Just delete the items in cart not set cart quote id to be 0
+     * 
+     * @param \AlbertMage\Quote\Api\Data\CartInterface $cart
+     * @return void
+     */
+    private function emptyCart(\AlbertMage\Quote\Api\Data\CartInterface $cart)
+    {
+        foreach ($cart->getAllItems() as $cartItem) {
+            $this->cartItemRepository->delete($cartItem);
+        }
+        $cart->setQuoteId(0);
+        $this->cartRepository->save($cart);
     }
 
 }
