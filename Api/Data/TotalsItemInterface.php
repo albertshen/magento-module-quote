@@ -120,17 +120,17 @@ interface TotalsItemInterface extends \Magento\Framework\Api\ExtensibleDataInter
     /**
      * Returns the product.
      *
-     * @return \AlbertMage\Catalog\Api\Data\ProductListItemInterface.
+     * @return \AlbertMage\Catalog\Api\Data\ProductInterface.
      */
     public function getProduct();
 
     /**
      * Sets the product.
      *
-     * @param \AlbertMage\Catalog\Api\Data\ProductListItemInterface $product
+     * @param \AlbertMage\Catalog\Api\Data\ProductInterface $product
      * @return $this
      */
-    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductListItemInterface $product);
+    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductInterface $product);
 
     /**
      * Returns is active
