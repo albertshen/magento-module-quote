@@ -67,21 +67,28 @@ class TotalsManagement
         $totalsData = $totals->toArray();
 
         unset($totalsData[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]);
-        unset($totalsData[TotalsInterface::KEY_TOTAL_SEGMENTS]);
         unset($totalsData[TotalsInterface::KEY_ITEMS]);
  
-        $newTotals = $this->totalsInterfaceFactory->create();
-        $this->dataObjectHelper->populateWithArray(
-            $newTotals,
-            $totalsData,
-            \AlbertMage\Quote\Api\Data\TotalsInterface::class
-        );
-
         $newTotalsItems = [];
-        foreach ($totals->getItems() as $totalItem) {
-            $newTotalsItems[] = $this->getTotalsItem($totalItem);
+        foreach ($totals->getItems() as $totalsItem) {
+            $newTotalsItems[] = $this->getTotalsItem($totalsItem);
         }
-        $newTotals->setItems($newTotalsItems);
+        $totalsData['items'] = $newTotalsItems;
+
+        $newTotals = $this->totalsInterfaceFactory->create(['data' => $totalsData]);
+
+        // $newTotals = $this->totalsInterfaceFactory->create();
+        // $this->dataObjectHelper->populateWithArray(
+        //     $newTotals,
+        //     $totalsData,
+        //     \AlbertMage\Quote\Api\Data\TotalsInterface::class
+        // );
+
+        // $newTotalsItems = [];
+        // foreach ($totals->getItems() as $totalItem) {
+        //     $newTotalsItems[] = $this->getTotalsItem($totalItem);
+        // }
+        // $newTotals->setItems($newTotalsItems);
 
         return $newTotals;
     }
@@ -99,12 +106,8 @@ class TotalsManagement
 
         unset($item[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]);
 
-        $newItem = $this->totalsItemInterfaceFactory->create();
-        $this->dataObjectHelper->populateWithArray(
-            $newItem,
-            $item,
-            \AlbertMage\Quote\Api\Data\TotalsItemInterface::class
-        );
+        $newItem = $this->totalsItemInterfaceFactory->create(['data' => $item]);
+
         $newItem->setProduct($product);
 
         return $newItem;

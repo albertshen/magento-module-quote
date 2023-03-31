@@ -160,4 +160,25 @@ class Totals extends AbstractModel implements TotalsInterface
     {
         return $this->setData(self::KEY_ITEMS, $items);
     }
+
+    /**
+     * Get dynamically calculated totals
+     *
+     * @return \Magento\Quote\Api\Data\TotalSegmentInterface[]
+     */
+    public function getTotalSegments()
+    {
+        return $this->getData(self::KEY_TOTAL_SEGMENTS);
+    }
+
+    /**
+     * Set dynamically calculated totals
+     *
+     * @param \Magento\Quote\Api\Data\TotalSegmentInterface[] $totals
+     * @return $this
+     */
+    public function setTotalSegments($totals = [])
+    {
+        return $this->setData(self::KEY_TOTAL_SEGMENTS, $items);
+    }
 }

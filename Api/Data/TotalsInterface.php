@@ -27,6 +27,8 @@ interface TotalsInterface
 
     const KEY_ITEMS_QTY = 'items_qty';
 
+    const KEY_TOTAL_SEGMENTS = 'total_segments';
+
     /**
      * Get grand total in quote currency
      *
@@ -131,5 +133,20 @@ interface TotalsInterface
      * @return $this
      */
     public function setItems(array $items = null);
+
+    /**
+     * Get dynamically calculated totals
+     *
+     * @return \Magento\Quote\Api\Data\TotalSegmentInterface[]
+     */
+    public function getTotalSegments();
+
+    /**
+     * Set dynamically calculated totals
+     *
+     * @param \Magento\Quote\Api\Data\TotalSegmentInterface[] $totals
+     * @return $this
+     */
+    public function setTotalSegments($totals = []);
     
 }
