@@ -4,9 +4,9 @@
  */
 declare(strict_types=1);
 
-namespace AlbertMage\Notification\Model;
+namespace AlbertMage\Quote\Model;
 
-use AlbertMage\Notification\Api\Data\CartItemSearchResultsInterface;
+use AlbertMage\Quote\Api\Data\CartItemSearchResultsInterface;
 use Magento\Framework\Api\SearchResults;
 
 /**
