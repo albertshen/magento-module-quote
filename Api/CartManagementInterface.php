@@ -11,6 +11,25 @@ namespace AlbertMage\Quote\Api;
  */
 interface CartManagementInterface
 {
+
+    /**
+     * Get mine cart items.
+     *
+     * @param int $customerId
+     * @return \AlbertMage\Quote\Api\Data\CartItemInterface[]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getMineCartItems($customerId);
+
+    /**
+     * Get guest cart items.
+     *
+     * @param string $guestToken
+     * @return \AlbertMage\Quote\Api\Data\CartItemInterface[]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getGuestCartItems($guestToken);
+
     /**
      * Add mine cart item.
      *
@@ -30,4 +49,68 @@ interface CartManagementInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function addGuestItem($guestToken, $productId);
+
+    /**
+     * Update mine cart item.
+     *
+     * @param int $customerId
+     * @param int $itemId
+     * @param float $qty
+     * @param int $isActive
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function updateMineItem($customerId, $itemId, $qty, $isActive);
+
+    /**
+     * Update guest cart item.
+     *
+     * @param string $guestToken
+     * @param int $itemId
+     * @param float $qty
+     * @param int $isActive
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function updateGuestItem($guestToken, $itemId, $qty, $isActive);
+
+    /**
+     * Select all mine cart item.
+     *
+     * @param int $customerId
+     * @param int $selected
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function selectAllMineItems($customerId, $selected);
+
+    /**
+     * Select all guest cart item.
+     *
+     * @param string $guestToken
+     * @param int $selected
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function selectAllGuestItems($guestToken, $selected);
+
+    /**
+     * Remove mine cart item.
+     *
+     * @param int $customerId
+     * @param int $itemId
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function removeMineItem($customerId, $itemId);
+
+    /**
+     * Remove guest cart item.
+     *
+     * @param string $guestToken
+     * @param int $itemId
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function removeGuestItem($guestToken, $itemId);
 }

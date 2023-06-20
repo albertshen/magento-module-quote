@@ -1,6 +1,21 @@
 <?xml version="1.0" ?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <route url="/V2/carts/mine/item" method="POST">
+    <route url="/V2/carts/mine" method="GET">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getMineCartItems"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V2/carts/guest" method="GET">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getGuestCartItems"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V2/carts/mine/item/add" method="POST">
         <service class="AlbertMage\Quote\Api\CartManagementInterface" method="addMineItem"/>
         <resources>
             <resource ref="self" />
@@ -9,8 +24,53 @@
             <parameter name="customerId" force="true">%customer_id%</parameter>
         </data>
     </route>
-    <route url="/V2/carts/guest/item" method="POST">
+    <route url="/V2/carts/guest/item/add" method="POST">
         <service class="AlbertMage\Quote\Api\CartManagementInterface" method="addGuestItem"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V2/carts/mine/item/update" method="POST">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="updateMineItem"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V2/carts/guest/item/update" method="POST">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="updateGuestItem"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V2/carts/mine/selectall" method="POST">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="selectAllMineItems"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V2/carts/guest/selectall" method="POST">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="selectAllGuestItems"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V2/carts/mine/item/remove" method="POST">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="removeMineItem"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V2/carts/guest/item/remove" method="POST">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="removeGuestItem"/>
         <resources>
             <resource ref="anonymous" />
         </resources>

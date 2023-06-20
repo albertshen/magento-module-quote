@@ -96,6 +96,26 @@ class CartItem extends AbstractModel implements CartItemInterface
     /**
      * @inheritDoc
      */
+    public function getProduct()
+    {
+        $productListItem = $this->getData('product');
+        if (null === $productListItem) {
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $product = $objectManager->get(\Magento\Catalog\Model\Product::class)->load($this->getProductId());
+            $productListItem = $objectManager->get(\AlbertMage\Catalog\Model\ProductManagement::class)->getListItem($product);
+            $this->setData('product', $productListItem);
+        }
+        return $productListItem;
+    }
+
+    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductInterface $product)
+    {
+
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getQty()
     {
         return $this->getData(self::QTY);

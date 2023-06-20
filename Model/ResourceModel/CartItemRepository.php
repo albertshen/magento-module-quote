@@ -98,7 +98,7 @@ class CartItemRepository implements \AlbertMage\Quote\Api\CartItemRepositoryInte
                 __("The sms message that was requested doesn't exist.")
             );
         }
-        return $cart;
+        return $cartItem;
     }
 
     /**

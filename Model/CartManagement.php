@@ -77,6 +77,31 @@ class CartManagement implements CartManagementInterface
     /**
      * @inheritDoc
      */
+    public function getMineCartItems($customerId)
+    {
+        $cart = $this->cartInterfaceFactory->create()->load($customerId, 'customer_id');
+
+        return $this->getCartItems($cart);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getGuestCartItems($guestToken)
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $guest = $objectManager->create(\AlbertMage\Customer\Api\Data\SocialAccountInterface::class)->load($guestToken, 'unique_hash');
+
+        $guestId = $guest->getOpenId();
+
+        $cart = $this->cartInterfaceFactory->create()->load($guestId, 'guest_id');
+
+        return $this->getCartItems($cart);
+    }
+    
+    /**
+     * @inheritDoc
+     */
     public function addMineItem($customerId, $productId)
     {
         $product = $this->productFactory->create()->load($productId);
@@ -132,6 +157,142 @@ class CartManagement implements CartManagementInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function updateMineItem($customerId, $itemId, $qty, $isActive)
+    {
+
+        $cartItem = $this->cartItemRepository->getById($itemId);
+
+        $cart = $this->cartInterfaceFactory->create()->load($cartItem->getCartId());
+        if ($cart->customerId() != $customerId) {
+            throw new NoSuchEntityException(
+                __('The cart item doesn\'t exit.'),
+
+            );
+        }
+
+        $cartItem->setQty($qty);
+
+        $cartItem->setIsActive($isActive);
+
+        $this->cartItemRepository->save($cartItem);
+
+        return true;
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function updateGuestItem($guestToken, $itemId, $qty, $isActive)
+    {
+    
+        $cartItem = $this->cartItemRepository->getById($itemId);
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $guest = $objectManager->create(\AlbertMage\Customer\Api\Data\SocialAccountInterface::class)->load($guestToken, 'unique_hash');
+
+        $guestId = $guest->getOpenId();
+
+        $cart = $this->cartInterfaceFactory->create()->load($cartItem->getCartId());
+
+        if ($cart->getGuestId() != $guestId) {
+            throw new NoSuchEntityException(
+                __('The cart item doesn\'t exit.'),
+
+            );
+        }
+
+        $cartItem->setQty($qty);
+
+        $cartItem->setIsActive($isActive);
+
+        $this->cartItemRepository->save($cartItem);
+
+        return true;
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function selectAllMineItems($customerId, $selected)
+    {
+        $cart = $this->cartInterfaceFactory->create()->load($customerId, 'customer_id');
+
+        foreach($cart->getAllItems() as $cartItem) {
+            $cartItem->setIsActive($selected);
+            $this->cartItemRepository->save($cartItem);
+        }
+
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function selectAllGuestItems($guestToken, $selected)
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $guest = $objectManager->create(\AlbertMage\Customer\Api\Data\SocialAccountInterface::class)->load($guestToken, 'unique_hash');
+
+        $guestId = $guest->getOpenId();
+
+        $cart = $this->cartInterfaceFactory->create()->load($guestId, 'guest_id');
+
+        foreach($cart->getAllItems() as $cartItem) {
+            $cartItem->setIsActive($selected);
+            $this->cartItemRepository->save($cartItem);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function removeMineItem($customerId, $itemId)
+    {
+        $cartItem = $this->cartItemRepository->getById($itemId);
+
+        $cart = $this->cartInterfaceFactory->create()->load($cartItem->getCartId());
+        if ($cart->customerId() != $customerId) {
+            throw new NoSuchEntityException(
+                __('The cart item doesn\'t exit.'),
+
+            );
+        }
+
+        $this->cartItemRepository->delete($cartItem);
+
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function removeGuestItem($guestToken, $itemId)
+    {
+        $cartItem = $this->cartItemRepository->getById($itemId);
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $guest = $objectManager->create(\AlbertMage\Customer\Api\Data\SocialAccountInterface::class)->load($guestToken, 'unique_hash');
+
+        $guestId = $guest->getOpenId();
+
+        $cart = $this->cartInterfaceFactory->create()->load($cartItem->getCartId());
+
+        if ($cart->getGuestId() != $guestId) {
+            throw new NoSuchEntityException(
+                __('The cart item doesn\'t exit.'),
+
+            );
+        }
+
+        $this->cartItemRepository->delete($cartItem);
+        
+        return true;
+    }
+
+    /**
      * Merge the guest cart with customer cart
      * 
      * @param string $guestId
@@ -174,6 +335,30 @@ class CartManagement implements CartManagementInterface
             }
 
         }
+    }
+
+    /**
+     * Get mine cart items.
+     *
+     * @param \AlbertMage\Quote\Api\Data\CartInterface $cart
+     * @return \AlbertMage\Quote\Api\Data\CartItemInterface[]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    private function getCartItems(\AlbertMage\Quote\Api\Data\CartInterface $cart)
+    {
+        $cartItems = [];
+        foreach($cart->getAllItems() as $cartItem) {
+            if ($cartItem->getProduct()->getStock() <= $cartItem->getQty()) {
+                $cartItem->setQty($cartItem->getProduct()->getStock());
+                $this->cartItemRepository->save($cartItem);
+            }
+            if (!$cartItem->getProduct()->getAvailable()) {
+                $cartItem->setIsActive(0);
+                $this->cartItemRepository->save($cartItem);
+            }
+            $cartItems[] = $cartItem;
+        }
+        return $cartItems;
     }
 
     /**

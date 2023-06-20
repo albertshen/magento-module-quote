@@ -26,7 +26,7 @@ interface CartItemInterface
     /**
      * Get ID
      *
-     * @return int|null
+     * @return int
      */
     public function getId();
 
@@ -71,7 +71,7 @@ interface CartItemInterface
     /**
      * Get sku
      *
-     * @return string
+     * @return string|null
      */
     public function getSku();
 
@@ -82,6 +82,21 @@ interface CartItemInterface
      * @return $this
      */
     public function setSku($sku);
+
+    /**
+     * Get product
+     *
+     * @return \AlbertMage\Catalog\Api\Data\ProductInterface
+     */
+    public function getProduct();
+
+    /**
+     * Get product
+     *
+     * @param \AlbertMage\Catalog\Api\Data\ProductInterface $product
+     * @return $this
+     */
+    public function setProduct(\AlbertMage\Catalog\Api\Data\ProductInterface $product);
 
     /**
      * Get qty
@@ -116,7 +131,7 @@ interface CartItemInterface
     /**
      * Get quote item
      *
-     * @return \Magento\Quote\Api\Data\CartItemInterface
+     * @return \Magento\Quote\Api\Data\CartItemInterface|null
      */
     public function getQuoteItem();
 
