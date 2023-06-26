@@ -1,7 +1,22 @@
 <?xml version="1.0" ?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V2/carts/mine/total-qty" method="GET">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getMineCartTotalQty"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+    <route url="/V2/carts/guest/total-qty" method="GET">
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getGuestCartTotalQty"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
     <route url="/V2/carts/mine" method="GET">
-        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getMineCartItems"/>
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getMineCartInfo"/>
         <resources>
             <resource ref="self" />
         </resources>
@@ -10,7 +25,7 @@
         </data>
     </route>
     <route url="/V2/carts/guest" method="GET">
-        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getGuestCartItems"/>
+        <service class="AlbertMage\Quote\Api\CartManagementInterface" method="getGuestCartInfo"/>
         <resources>
             <resource ref="anonymous" />
         </resources>

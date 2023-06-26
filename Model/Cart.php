@@ -97,7 +97,7 @@ class Cart extends AbstractModel implements CartInterface
     /**
      * Retrieve cart items array
      *
-     * @return array
+     * @return \AlbertMage\Quote\Model\CartItem[]
      */
     public function getAllItems()
     {
@@ -109,6 +109,26 @@ class Cart extends AbstractModel implements CartInterface
             $this->setData('all_items', $allItems);
         }
         return $allItems;
+    }
+
+    /**
+     * Retrieve selected cart items array
+     *
+     * @return array
+     */
+    public function getSelectedItems()
+    {
+
+        $items = $this->getData('selected_items');
+        if (null === $items) {
+            $items = [];
+            $cartItemCollection = ObjectManager::getInstance()->get(\AlbertMage\Quote\Model\ResourceModel\CartItem\Collection::class);
+            $cartItemCollection->addFieldToFilter('cart_id', ['eq' => $this->getId()]);
+            $cartItemCollection->addFieldToFilter('is_active', ['eq' => 1]);
+            $items = $cartItemCollection->getItems();
+            $this->setData('selected_items', $items);
+        }
+        return $items;
     }
 
     /**

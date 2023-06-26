@@ -175,7 +175,7 @@ class TotalsManagement
      */
     private function getTotalsListItemProduct($productId)
     {
-        return $this->productManagement->getListItem($productId);
+        return $this->productManagement->getListItemById($productId);
     }
 
 }

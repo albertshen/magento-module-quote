@@ -3,6 +3,7 @@
     <preference for="AlbertMage\Quote\Api\CartRepositoryInterface" type="AlbertMage\Quote\Model\ResourceModel\CartRepository"/>
     <preference for="AlbertMage\Quote\Api\Data\CartSearchResultsInterface" type="AlbertMage\Quote\Model\CartSearchResults"/>
     <preference for="AlbertMage\Quote\Api\Data\CartInterface" type="AlbertMage\Quote\Model\Cart"/>
+    <preference for="AlbertMage\Quote\Api\CartInterface" type="AlbertMage\Quote\Model\CartInfo"/>
     <preference for="AlbertMage\Quote\Api\CartItemRepositoryInterface" type="AlbertMage\Quote\Model\ResourceModel\CartItemRepository"/>
     <preference for="AlbertMage\Quote\Api\Data\CartItemSearchResultsInterface" type="AlbertMage\Quote\Model\CartItemSearchResults"/>
     <preference for="AlbertMage\Quote\Api\Data\CartItemInterface" type="AlbertMage\Quote\Model\CartItem"/>
@@ -15,5 +16,12 @@
     </type>
     <type name="Magento\Quote\Model\Cart\Totals\ItemConverter">
         <plugin name="quote_totals_item_converter" type="AlbertMage\Quote\Plugin\ItemConverter"/>
+    </type>
+    <type name="Magento\Webapi\Controller\Rest\ParamsOverrider">
+        <arguments>
+            <argument name="paramOverriders" xsi:type="array">
+                <item name="%new_cart_id%" xsi:type="object">AlbertMage\Quote\Model\Webapi\ParamOverriderCartId</item>
+            </argument>
+        </arguments>
     </type>
 </config>

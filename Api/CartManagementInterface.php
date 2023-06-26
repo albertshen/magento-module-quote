@@ -13,22 +13,40 @@ interface CartManagementInterface
 {
 
     /**
+     * Get mine cart total qty.
+     *
+     * @param int $customerId
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getMineCartTotalQty($customerId);
+
+    /**
+     * Get guest cart total qty.
+     *
+     * @param string $guestToken
+     * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getGuestCartTotalQty($guestToken);
+
+    /**
      * Get mine cart items.
      *
      * @param int $customerId
-     * @return \AlbertMage\Quote\Api\Data\CartItemInterface[]
+     * @return \AlbertMage\Quote\Api\CartInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getMineCartItems($customerId);
+    public function getMineCartInfo($customerId);
 
     /**
      * Get guest cart items.
      *
      * @param string $guestToken
-     * @return \AlbertMage\Quote\Api\Data\CartItemInterface[]
+     * @return \AlbertMage\Quote\Api\CartInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getGuestCartItems($guestToken);
+    public function getGuestCartInfo($guestToken);
 
     /**
      * Add mine cart item.
