@@ -15,12 +15,21 @@ interface CartItemInterface
      * Constants for keys of data array. Identical to the name of the getter in snake case
      */
     const ID = 'item_id';
+
     const CART_ID = 'cart_id';
+
     const PRODUCT_ID = 'product_id';
+
+    const PRODUCT = 'product';
+
     const SKU = 'sku';
+
     const QTY = 'qty';
+
     const IS_ACTIVE = 'is_active';
+
     const QUOTE_ITEM = 'quote_item';
+
     /**#@-*/
 
     /**

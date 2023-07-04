@@ -50,9 +50,6 @@
         <resources>
             <resource ref="self" />
         </resources>
-        <data>
-            <parameter name="customerId" force="true">%customer_id%</parameter>
-        </data>
     </route>
     <route url="/V2/carts/guest/item/update" method="POST">
         <service class="AlbertMage\Quote\Api\CartManagementInterface" method="updateGuestItem"/>
@@ -80,9 +77,6 @@
         <resources>
             <resource ref="self" />
         </resources>
-        <data>
-            <parameter name="customerId" force="true">%customer_id%</parameter>
-        </data>
     </route>
     <route url="/V2/carts/guest/item/remove" method="POST">
         <service class="AlbertMage\Quote\Api\CartManagementInterface" method="removeGuestItem"/>

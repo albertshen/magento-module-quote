@@ -16,6 +16,7 @@ use AlbertMage\Quote\Api\Data\CartInterface;
 use AlbertMage\Quote\Model\ResourceModel\CartRepository;
 use AlbertMage\Quote\Model\ResourceModel\CartItemRepository;
 use AlbertMage\Customer\Api\Data\SocialAccountInterfaceFactory;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * @author Albert Shen <albertshen1206@gmail.com>
@@ -179,7 +180,6 @@ class CartManagement implements CartManagementInterface
         if (!$product->getId()) {
             throw new NoSuchEntityException(
                 __('The product doesn\'t exit.'),
-
             );
         }
         
@@ -233,18 +233,12 @@ class CartManagement implements CartManagementInterface
     /**
      * @inheritDoc
      */
-    public function updateMineItem($customerId, $itemId, $qty, $isActive)
+    public function updateMineItem($itemId, $qty, $isActive)
     {
 
         $cartItem = $this->cartItemRepository->getById($itemId);
 
         $cart = $this->cartInterfaceFactory->create()->load($cartItem->getCartId());
-        if ($cart->getCustomerId() != $customerId) {
-            throw new NoSuchEntityException(
-                __('The cart item doesn\'t exit.'),
-
-            );
-        }
 
         $cartItem->setQty($qty);
 
@@ -333,17 +327,11 @@ class CartManagement implements CartManagementInterface
     /**
      * @inheritDoc
      */
-    public function removeMineItem($customerId, $itemId)
+    public function removeMineItem($itemId)
     {
         $cartItem = $this->cartItemRepository->getById($itemId);
 
         $cart = $this->cartInterfaceFactory->create()->load($cartItem->getCartId());
-        if ($cart->customerId() != $customerId) {
-            throw new NoSuchEntityException(
-                __('The cart item doesn\'t exit.'),
-
-            );
-        }
 
         $this->cartItemRepository->delete($cartItem);
 
@@ -452,9 +440,13 @@ class CartManagement implements CartManagementInterface
      * @param int $cartId
      * @param \Magento\Catalog\Model\Product $product
      * @return int
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     private function addItem($cartId, \Magento\Catalog\Model\Product $product)
     {
+        if (!$product->isAvailable()) {
+            throw new LocalizedException(__('product is not available'), null, 4100);
+        }
 
         $productId = $product->getId();
         $cartItem = $this->cartItemRepository->getOneByProductId($cartId, $productId);
@@ -495,7 +487,7 @@ class CartManagement implements CartManagementInterface
      * @param \AlbertMage\Quote\Api\Data\CartInterface $cart
      * @return void
      */
-    private function emptyCart(\AlbertMage\Quote\Api\Data\CartInterface $cart)
+    public function emptyCart(\AlbertMage\Quote\Api\Data\CartInterface $cart)
     {
         foreach ($cart->getAllItems() as $cartItem) {
             $this->cartItemRepository->delete($cartItem);
@@ -503,5 +495,29 @@ class CartManagement implements CartManagementInterface
         $cart->setQuoteId(0);
         $cart->save();
     }
+
+    /**
+     * Empty the cart item in quote
+     * Just delete the quoted items in cart and set cart quote id to 0
+     * 
+     * @param \AlbertMage\Quote\Api\Data\CartInterface $cart
+     * @return void
+     */
+    public function removeCartItemByQuote(\Magento\Quote\Api\Data\CartInterface $quote)
+    {
+        $cart = $this->cart->load($quote->getId(), 'quote_id');
+        $removeProductIds = [];
+        foreach ($quote->getItems() as $quoteItem) {
+            $removeProductIds[] = $quoteItem->getProductId();
+        }
+        foreach ($cart->getAllItems() as $cartItem) {
+            if (in_array($cartItem->getId(), $removeProductIds)) {
+                $cartItem->delete();
+            }
+        }
+        $cart->setQuoteId(0);
+        $cart->save();
+    }
+
 
 }

@@ -10,7 +10,9 @@
     <preference for="AlbertMage\Quote\Api\CartManagementInterface" type="AlbertMage\Quote\Model\CartManagement"/>
     <preference for="AlbertMage\Quote\Api\Data\TotalsInterface" type="AlbertMage\Quote\Model\Cart\Totals"/>
     <preference for="AlbertMage\Quote\Api\Data\TotalsItemInterface" type="AlbertMage\Quote\Model\Cart\TotalsItem"/>
-
+    <type name="AlbertMage\Quote\Model\ResourceModel\Cart">
+        <plugin name="authorization" type="AlbertMage\Quote\Model\ResourceModel\Cart\Plugin\Authorization" />
+    </type>
     <type name="Magento\SalesRule\Model\ResourceModel\Rule\Collection">
         <plugin name="sales_rule_collection" type="AlbertMage\Quote\Plugin\RuleCollection"/>
     </type>

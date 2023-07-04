@@ -40,10 +40,6 @@ class SubmitObserver implements ObserverInterface
         /** @var  Quote $quote */
         $quote = $observer->getEvent()->getQuote();
 
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $cart = $objectManager->create(\AlbertMage\Quote\Api\Data\CartInterface::class)->load($quote->getId(), 'quote_id');
-        if ($cart->getId()) {
-        	$this->cartManagement->emptyCart($cart);
-        }
+        $this->cartManagement->removeCartItemByQuote($quote);
     }
 }

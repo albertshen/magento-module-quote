@@ -7,11 +7,11 @@ declare(strict_types=1);
 namespace AlbertMage\Quote\Model;
 
 use Magento\Framework\Api\DataObjectHelper;
-use \Magento\Quote\Api\Data\TotalsInterface;
-use \Magento\Quote\Api\Data\TotalsItemInterface;
+use Magento\Quote\Api\Data\TotalsInterface;
+use Magento\Quote\Api\Data\TotalsItemInterface;
 use AlbertMage\Quote\Api\Data\TotalsInterfaceFactory;
 use AlbertMage\Quote\Api\Data\TotalsItemInterfaceFactory;
-use \AlbertMage\Catalog\Api\ProductManagementInterface;
+use AlbertMage\Catalog\Api\ProductManagementInterface;
 use Magento\Framework\Api\ExtensibleDataInterface;
 
 /**

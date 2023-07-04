@@ -71,14 +71,13 @@ interface CartManagementInterface
     /**
      * Update mine cart item.
      *
-     * @param int $customerId
      * @param int $itemId
      * @param float $qty
      * @param int $isActive
      * @return int
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function updateMineItem($customerId, $itemId, $qty, $isActive);
+    public function updateMineItem($itemId, $qty, $isActive);
 
     /**
      * Update guest cart item.
@@ -115,12 +114,11 @@ interface CartManagementInterface
     /**
      * Remove mine cart item.
      *
-     * @param int $customerId
      * @param int $itemId
      * @return int
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function removeMineItem($customerId, $itemId);
+    public function removeMineItem($itemId);
 
     /**
      * Remove guest cart item.
