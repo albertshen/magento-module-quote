@@ -21,7 +21,7 @@
                 comment="Customer ID"/>
         <column xsi:type="int" name="quote_id" unsigned="true" nullable="false" identity="false"
                 default="0" comment="Quote ID"/>
-        <column xsi:type="varchar" name="guest_id" unsigned="true" nullable="true" identity="false" length="255"
+        <column xsi:type="int" name="guest_id" unsigned="true" nullable="true" identity="false"
                 comment="Guest ID"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Created At"/>
