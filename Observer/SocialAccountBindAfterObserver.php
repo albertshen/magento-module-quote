@@ -9,7 +9,6 @@ namespace AlbertMage\Quote\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use AlbertMage\Quote\Api\Data\CartInterfaceFactory;
-use AlbertMage\Quote\Api\CartRepositoryInterface;
 
 /**
  * 
@@ -23,22 +22,12 @@ class SocialAccountBindAfterObserver implements ObserverInterface
     protected $cartInterfaceFactory;
 
     /**
-     * Cart repository.
-     *
-     * @var CartRepositoryInterface
-     */
-    protected $cartRepository;
-
-    /**
      * @param CartInterfaceFactory $cartInterfaceFactory
-     * @param CartRepositoryInterface $cartRepository
      */
     public function __construct(
-        CartInterfaceFactory $cartInterfaceFactory,
-        CartRepositoryInterface $cartRepository
+        CartInterfaceFactory $cartInterfaceFactory
     ) {
         $this->cartInterfaceFactory = $cartInterfaceFactory;
-        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -50,9 +39,10 @@ class SocialAccountBindAfterObserver implements ObserverInterface
 
         $cart = $this->cartInterfaceFactory->create()->load($socialAccount->getId(), 'guest_id');
 
-        $cart->setCustomerId($socialAccount->getCustomer()->getId());
-        
-        $this->cartRepository->save($cart);
+        if($cart->getId()) {
+            $cart->setCustomerId($socialAccount->getCustomer()->getId());
+            $cart->save();
+        }
         
     }
 }
