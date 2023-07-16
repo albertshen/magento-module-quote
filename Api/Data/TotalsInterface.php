@@ -25,6 +25,8 @@ interface TotalsInterface
 
     const KEY_ITEMS = 'items';
 
+    const COUPON_CODE = 'coupon_code';
+
     const KEY_ITEMS_QTY = 'items_qty';
 
     const KEY_TOTAL_SEGMENTS = 'total_segments';
@@ -133,6 +135,21 @@ interface TotalsInterface
      * @return $this
      */
     public function setItems(array $items = null);
+
+    /**
+     * Get coupon code
+     *
+     * @return string|null
+     */
+    public function getCouponCode();
+
+    /**
+     * Set coupon code
+     *
+     * @param string $couponCode
+     * @return $this
+     */
+    public function setCouponCode($couponCode);
 
     /**
      * Get dynamically calculated totals

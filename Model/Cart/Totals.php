@@ -162,6 +162,27 @@ class Totals extends AbstractModel implements TotalsInterface
     }
 
     /**
+     * Get coupon code
+     *
+     * @return string|null
+     */
+    public function getCouponCode()
+    {
+        return $this->getData(self::COUPON_CODE);
+    }
+
+    /**
+     * Set coupon code
+     *
+     * @param string $couponCode
+     * @return $this
+     */
+    public function setCouponCode($couponCode)
+    {
+        return $this->setData(self::COUPON_CODE, $couponCode);
+    }
+
+    /**
      * Get dynamically calculated totals
      *
      * @return \Magento\Quote\Api\Data\TotalSegmentInterface[]
