@@ -40,7 +40,7 @@ class SocialAccountBindAfterObserver implements ObserverInterface
         $cart = $this->cartInterfaceFactory->create()->load($socialAccount->getId(), 'guest_id');
 
         if($cart->getId()) {
-            $cart->setCustomerId($socialAccount->getCustomer()->getId());
+            $cart->setCustomerId($socialAccount->getCustomerId());
             $cart->save();
         }
         
